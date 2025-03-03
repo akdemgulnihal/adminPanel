@@ -9,6 +9,7 @@ using System.Net.Http;
 using System;
 using WpfApp1;
 using System.Linq;
+using System.Windows.Threading;
 
 namespace AdminPanel
 {
@@ -18,22 +19,45 @@ namespace AdminPanel
     public partial class AdminHomePage : Page
     {
 
-  
+        private DispatcherTimer _refreshTimer;
         private string _username;
+
+        //Initialization
         public AdminHomePage(string username)
         {
             InitializeComponent();
             _username = username;
             LoadUserData();
 
+            StartRefreshTimer();  // Sayfa yenilemeyi başlat
         }
 
+        private void StartRefreshTimer()
+        {
+            // DispatcherTimer'ı başlatıyoruz, 10 saniyede bir çalışacak
+            _refreshTimer = new DispatcherTimer();
+            _refreshTimer.Interval = TimeSpan.FromSeconds(5);  // 5 saniye aralık
+            _refreshTimer.Tick += RefreshTimer_Tick;  // Timer tetiklendiğinde yapılacak işlemler
+            _refreshTimer.Start();  // Timer'ı başlat
+        }
+        private void RefreshTimer_Tick(object sender, EventArgs e)
+        {
+            // Timer tetiklendiğinde LoadUserData fonksiyonunu tekrar çağırarak sayfayı yenileyin
+            LoadUserData();
+        }
+
+
+        // Add New User butonuna basıldığında çalışan fonksiyon
         private void NewUser_Click(object sender, RoutedEventArgs e)
         {
+            
             var newUserWindow = new NewUserWindow();
+
+            //newUserWindow page'ine geçiş yapılıyor
             NavigationService.Navigate(newUserWindow);
 
-
+            // Kullanıcı eklendikten sonra veri yeniden yüklerek, yeni değerlerin listede görünmesi gerektiğinden 
+            // bu blok yazıldı
             newUserWindow.UserAdded += (s, args) =>
             {
                 LoadUserData();  // Kullanıcı eklendikten sonra veri yeniden yüklenecek
@@ -44,6 +68,7 @@ namespace AdminPanel
         {
             try
             {
+
                 var firebase = new FirebaseClient(FirebaseService.FirebaseUrl);
                 var userRef = firebase.Child("StandartUserTable");
 
@@ -133,8 +158,6 @@ namespace AdminPanel
                                 }
                             }
                         }
-
-
 
 
                         // Silme isleminden sonra sayfa tekrar load ediliyor

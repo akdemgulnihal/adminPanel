@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Controls;
 using Firebase.Database;
 using Firebase.Database.Query;
@@ -10,6 +9,7 @@ using System.Net.Http;
 using System;
 using WpfApp1;
 using System.Linq;
+using System.Windows.Threading;
 
 namespace AdminPanel
 {
@@ -18,30 +18,48 @@ namespace AdminPanel
     /// </summary>
     public partial class UserHomePage : Page
     {
+        private DispatcherTimer _refreshTimer;
 
         private int currentPage = 1;
         private int pageSize = 15;
         private int totalPages = 1;
         private List<UsersData> UserList;
-
-        string firebaseUrl = FirebaseConfig.FirebaseUrl; // Firebase URL,
         private string _username;
+
+
+        //Constructor
         public UserHomePage(string username)
         {
             InitializeComponent();
             _username = username;
             LoadUserData();
 
+            StartRefreshTimer();  // Sayfa yenilemeyi başlat
+        }
+
+        private void StartRefreshTimer()
+        {
+            // DispatcherTimer'ı başlatıyoruz, 10 saniyede bir çalışacak
+            _refreshTimer = new DispatcherTimer();
+            _refreshTimer.Interval = TimeSpan.FromSeconds(5);  // 5 saniye aralık
+            _refreshTimer.Tick += RefreshTimer_Tick;  // Timer tetiklendiğinde yapılacak işlemler
+            _refreshTimer.Start();  // Timer'ı başlat
+        }
+
+        private void RefreshTimer_Tick(object sender, EventArgs e)
+        {
+            // Timer tetiklendiğinde LoadUserData fonksiyonunu tekrar çağırarak sayfayı yenileyin
+            LoadUserData();
         }
 
         private async void LoadUserData()
         {
             try
             {
-                var firebase = new FirebaseClient(firebaseUrl);
+                var firebase = new FirebaseClient(FirebaseService.FirebaseUrl);
                 var userRef = firebase.Child("StandartUserTable");
 
-                //  StandartUserTable'daki userların hepsini alıyot
+                //  StandartUserTable'daki userların hepsini alıyor
                 var users = await userRef.OnceAsync<UsersData>();
 
                 // DataGrid'de gösterilmek icin Liste olusturuldu
@@ -57,14 +75,14 @@ namespace AdminPanel
 
 
                 // Toplam sayfa sayısını hesaplıyor
-                totalPages = (int)Math.Ceiling((double)UserList.Count / pageSize);
+                //totalPages = (int)Math.Ceiling((double)UserList.Count / pageSize);
 
                 // Get the users for the current page
-                var pagedUsers = UserList.Skip((currentPage- 1) * pageSize).Take(pageSize).ToList();
+                //var pagedUsers = UserList.Skip((currentPage- 1) * pageSize).Take(pageSize).ToList();
 
 
                 // Bind the user list to the DataGrid
-                userDataGrid.ItemsSource = userList;
+                //userDataGrid.ItemsSource = userList;
             }
             catch (Exception ex)
             {
@@ -124,16 +142,20 @@ namespace AdminPanel
             }
         }
 
+
+        //Logout butonuna basılınca bu fonksiyon çalışıyor
+        //Ve bu username'deki kullanıcının LoginStatus değişkenini Active'den Passive çevrilmesini yapıyor.
         private async void LogoutButton_Click(object sender, RoutedEventArgs e)
         {
             //string loggedInUsername = _username;  // Replace with actual logged-in username, you may already have this stored.
 
             try
             {
+                //using anahtar kelimesi ile, HttpClient nesnesi bir client değişkeni olarak oluşturulur.
                 using (HttpClient client = new HttpClient())
                 {
 
-                    string url = firebaseUrl + "/StandartUserTable.json";
+                    string url = FirebaseService.FirebaseUrl + "/StandartUserTable.json";
 
                     HttpResponseMessage response = await client.GetAsync(url);
 
@@ -150,7 +172,7 @@ namespace AdminPanel
                             if (item.Value.Username == _username && item.Value.LoginStatus == "Active")
                             {
                                 // Set LoginStatus to Passive
-                                var firebase = new FirebaseClient(firebaseUrl);
+                                var firebase = new FirebaseClient(FirebaseService.FirebaseUrl);
                                 var userRef = firebase.Child("StandartUserTable").Child(item.Key); // Use the appropriate table (AdminTable or StandartUserTable)
 
                                 //Login status'un Passive olarak guncellenmesi
@@ -225,7 +247,7 @@ namespace AdminPanel
             catch (Exception ex)
             {
                 // Handle any errors here if needed
-                MessageBox.Show($"An error occurred: {ex.Message}");
+                MessageBox.Show($"Hata: {ex.Message}");
             }
 
            

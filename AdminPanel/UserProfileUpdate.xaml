@@ -34,7 +34,12 @@
             <TextBlock Text="Password" Margin="0,10,0,0" Width="360"/>
             <PasswordBox x:Name="PasswordBox" Margin="0,5" Height="30" Width="360" />
 
-            <Button Content="Save" Margin="0,20,0,0" Height="35" Width="100" Click="SaveBtn_Click"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,20,0,20">
+                <Button Content="Cancel" Margin="0,0,30,0" Height="35" Width="100" Click="CancelBtn_Click"/>
+
+                <Button Content="Save" Margin="0,0,0,0" Height="35" Width="100" Click="SaveBtn_Click"/>
+
+            </StackPanel>
         </StackPanel>
     </Grid>
     

@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Firebase.Database.Query;
@@ -93,7 +92,7 @@ namespace WpfApp1
                                 { "LoginStatus", "Active"   }
                             };
 
-                            // Update data on Firebase
+                            // Veri'nin güncellenmesi
                             await userRefToUpdate.PutAsync(dataToSend);
                             MessageBox.Show("Kullanıcı başarıyla güncellendi.");
                             userFound = true;
@@ -115,16 +114,22 @@ namespace WpfApp1
 
             OnUserEdit(); // Trigger the UserEdit event
 
-            // Navigate back to the Admin Home Page
+            // Admin Home Page'e geri dönülüyor
             if (NavigationService.CanGoBack)
             {
-                NavigationService.GoBack();  // This will navigate to the previous page (Admin Home Page)
+                NavigationService.GoBack();  // Önceki sayfa olan (Admin Home Page)'e gidiliyor
             }
             else
             {
                 // If no page to go back to, navigate directly to AdminHomePage
                 NavigationService.Navigate(new UserHomePage(_username));
             }
+        }
+
+        private void CancelBtn_Click(object sender, RoutedEventArgs e)
+        {
+            // If no page to go back to, navigate directly to AdminHomePage
+            NavigationService.Navigate(new UserHomePage(_username));
         }
     }
 }

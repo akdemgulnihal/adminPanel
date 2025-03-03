@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Firebase.Database.Query;
@@ -124,6 +123,12 @@ namespace WpfApp1
                 // If no page to go back to, navigate directly to AdminHomePage
                 NavigationService.Navigate(new AdminHomePage(_username));
             }
+        }
+
+        private void CancelBtn_Click(object sender, RoutedEventArgs e)
+        {
+            // If no page to go back to, navigate directly to AdminHomePage
+            NavigationService.Navigate(new AdminHomePage(_username));
         }
     }
 }
