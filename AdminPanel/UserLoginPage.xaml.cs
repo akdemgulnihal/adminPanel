@@ -133,8 +133,15 @@ namespace WpfApp1
                                 var dataToSend = new Dictionary<string, object>
                                 {
                                     {"Username" ,item.Value.Username },
-                                     {"Password" ,item.Value.Password },
-                                    { "LoginStatus", "Active" }
+                                    {"Password" ,item.Value.Password },
+                                    { "LoginStatus", "Active" },
+                                    { "Name", item.Value.Name },
+                                    { "Surname", item.Value.Surname },
+                                    { "Age", item.Value.Age },
+                                    { "Email", item.Value.Email },
+                                    { "Birthday", item.Value.Birthday },
+                                    { "University", item.Value.University },
+                                    { "Experience", item.Value.Experience }
                                 };
 
 

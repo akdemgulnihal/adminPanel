@@ -272,5 +272,7 @@ namespace AdminPanel
                 MessageBox.Show("Hata: " + ex.Message, "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+
     }
 }

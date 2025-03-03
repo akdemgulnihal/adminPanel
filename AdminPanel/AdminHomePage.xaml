@@ -31,8 +31,8 @@
                     <!-- Menu Titles -->
                     <TextBlock Text="Ad Soyad" Foreground="White" FontSize="22" FontWeight="SemiBold"
                                DockPanel.Dock="Top" TextAlignment="Center" Margin="5 25 0 10"/>
-                    <TextBlock Text="Yaş" Foreground="White" FontSize="20" FontWeight="SemiBold"
-                               DockPanel.Dock="Top" TextAlignment="Center" Margin="5 25 0 10"/>
+                    <TextBlock Text="Admin" Foreground="White" FontSize="10" FontWeight="SemiBold"   FontStyle="Italic" 
+                               DockPanel.Dock="Top" TextAlignment="Center" Margin="5 10 0 10"/>
                     <!-- Menu Separator-->
                     <Separator Margin="25" DockPanel.Dock="Top" Height="0.8" Background="#7e5fdc"/>
 
@@ -107,9 +107,10 @@
                     <Icon:PackIconMaterial Kind="Bell"/>
                 </Button>
 
-                <!-- Page Title -->
+                <!-- Page Title 
                 <TextBlock Text="Members" Grid.Row="1" FontSize="32" FontWeight="SemiBold" Margin="0 20 0 0 "
                            HorizontalAlignment="Left" Foreground="#123518"/>
+                -->
 
                 <!-- Add Button-->
                 <Button Style="{StaticResource addButton}" Click="NewUser_Click">
@@ -119,11 +120,12 @@
                     </StackPanel>
                 </Button>
 
-                <!-- Tab Buttons -->
+                <!-- Tab Buttons 
                 <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0 10 0 0">
-                    <Button Content="Kullanıcılar" Style="{StaticResource tabButton}" />
+                    <Button Content="Kullanıcılar" Style="{StaticResource tabButton}"  />
                     <Button Content="Yöneticiler" Style="{StaticResource tabButton}"/>
                 </StackPanel>
+                -->
 
                 <!-- Filter TextBox-->
                 <Grid Width="200" HorizontalAlignment="Right" Grid.Row="4">

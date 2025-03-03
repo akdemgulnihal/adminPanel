@@ -213,6 +213,9 @@
     <Compile Include="UserLoginPage.xaml.cs">
       <DependentUpon>UserLoginPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserProfileUpdate.xaml.cs">
+      <DependentUpon>UserProfileUpdate.xaml</DependentUpon>
+    </Compile>
     <Page Include="AdminHomePage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -246,6 +249,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserLoginPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserProfileUpdate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
