@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Controls;
 using Firebase.Database;
 using Firebase.Database.Query;
@@ -19,7 +18,7 @@ namespace AdminPanel
     public partial class AdminHomePage : Page
     {
 
-        string firebaseUrl = FirebaseConfig.FirebaseUrl; // Firebase URL,
+  
         private string _username;
         public AdminHomePage(string username)
         {
@@ -31,11 +30,6 @@ namespace AdminPanel
 
         private void NewUser_Click(object sender, RoutedEventArgs e)
         {
-            // Yeni pencereyi açıyoruz
-            //NewUserWindow newUserWindow = new NewUserWindow();
-            //newUserWindow.Show();  // Pencereyi göster
-
-
             var newUserWindow = new NewUserWindow();
             NavigationService.Navigate(newUserWindow);
 
@@ -50,7 +44,7 @@ namespace AdminPanel
         {
             try
             {
-                var firebase = new FirebaseClient(firebaseUrl);
+                var firebase = new FirebaseClient(FirebaseService.FirebaseUrl);
                 var userRef = firebase.Child("StandartUserTable");
 
                 //  StandartUserTable'daki userların hepsini alıyot
@@ -86,12 +80,6 @@ namespace AdminPanel
             // Edit ekranı aciliyor ve düzenleme yapılabiliyor
             MessageBox.Show($"Edit user: {username}");
 
-
-            // Yeni pencereyi açıyoruz
-            //EditWindow editUserWindow = new EditWindow(username);
-            //editUserWindow.Show();  // Pencereyi göster
-
-
             var editUserWindow = new EditWindow(username);
             NavigationService.Navigate(editUserWindow);
 
@@ -118,7 +106,7 @@ namespace AdminPanel
                     using (HttpClient client = new HttpClient())
                     {
 
-                        string url = firebaseUrl + "/StandartUserTable.json";
+                        string url = FirebaseService.FirebaseUrl + "/StandartUserTable.json";
                         HttpResponseMessage response = await client.GetAsync(url);
 
                         if (response.IsSuccessStatusCode)
@@ -134,7 +122,7 @@ namespace AdminPanel
                                 if (item.Value.Username == username)
                                 {
                                     // Bulunan kullaniciyi ve detayları ile Firebase'den siliyoruz
-                                    var firebase = new FirebaseClient(firebaseUrl);
+                                    var firebase = new FirebaseClient(FirebaseService.FirebaseUrl);
                                     var userRef = firebase.Child("StandartUserTable").Child(item.Key); // Reference to the specific user
                                     await userRef.DeleteAsync();  // Silme işlemini yapan fonksiyon
 
@@ -222,7 +210,7 @@ namespace AdminPanel
                 using (HttpClient client = new HttpClient())
                 {
 
-                    string url = firebaseUrl + "/AdminTable.json";
+                    string url = FirebaseService.FirebaseUrl + "/AdminTable.json";
 
                     HttpResponseMessage response = await client.GetAsync(url);
 
@@ -239,7 +227,7 @@ namespace AdminPanel
                             if (item.Value.Username == _username && item.Value.LoginStatus == "Active")
                             {
                                 // Set LoginStatus to Passive
-                                var firebase = new FirebaseClient(firebaseUrl);
+                                var firebase = new FirebaseClient(FirebaseService.FirebaseUrl);
                                 var userRef = firebase.Child("AdminTable").Child(item.Key); // Use the appropriate table (AdminTable or StandartUserTable)
 
                                 //Login status'un Passive olarak guncellenmesi

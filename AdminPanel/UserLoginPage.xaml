@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        d:DesignHeight="450" d:DesignWidth="500" Loaded="UserControl_Loaded"
+        d:DesignHeight="450" d:DesignWidth="500" 
 >
 
 
@@ -21,6 +21,8 @@
                               ShadowDepth ="2" 
                               Color ="Gray" />
         </Border.Effect>
+
+        
         <StackPanel Orientation="Vertical"
                     Margin="20">
             <TextBlock Text="Standart Kullanıcı Girişi" 
@@ -47,7 +49,7 @@
                   Width="255"
                   BorderThickness="0,0,0,1"
                   HorizontalAlignment="Left"
-                  Text="örnek_kullanici" TextChanged="TextBox_TextChanged"
+                  Text="örnek_kullanici" 
                   GotFocus="NameTextBox_GotFocus"
                   LostFocus="NameTextBox_LostFocus"/>
                 <TextBlock Text="Şifre" 
@@ -99,37 +101,39 @@
             </Button>
 
             <Button x:Name="SwitchBtn" 
-        Content="Kullanıcı Tipini Değiştir" 
-        Foreground="White"
-        Background="Black"
-        Margin="0,2"
-        Height="20"
-        Width="185" Click="SwitchBtn_Click">
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type Button}">
-                                    <Border x:Name="SwitchBorder" Background="{TemplateBinding Background}"
-                                CornerRadius="16">
-                                        <ContentPresenter HorizontalAlignment="Center" 
-                                              VerticalAlignment="Center"/>
-                                    </Border>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="AliceBlue" TargetName="SwitchBorder"  />
-                                            <Setter Property="TextBlock.Foreground" Value="Black"  TargetName="SwitchBorder" />
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </Button.Style>
-            </Button>
+                Content="Kullanıcı Tipini Değiştir" 
+                Foreground="White"
+                Background="Black"
+                Margin="0,2"
+                Height="20"
+                Width="185" Click="SwitchBtn_Click">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type Button}">
+                                            <Border x:Name="SwitchBorder" Background="{TemplateBinding Background}"
+                                        CornerRadius="16">
+                                                <ContentPresenter HorizontalAlignment="Center" 
+                                                      VerticalAlignment="Center"/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="AliceBlue" TargetName="SwitchBorder"  />
+                                                    <Setter Property="TextBlock.Foreground" Value="Black"  TargetName="SwitchBorder" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                    </Button>
 
 
         </StackPanel>
+        
+        
     </Border>
 
 </Page>

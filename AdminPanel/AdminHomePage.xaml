@@ -8,7 +8,8 @@
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
     </Page.Resources>
 
-    <Border Background="#eff2f7" CornerRadius="30">
+    <Border Background="#eff2f7" CornerRadius="30">        
+          
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
@@ -107,10 +108,7 @@
                     <Icon:PackIconMaterial Kind="Bell"/>
                 </Button>
 
-                <!-- Page Title 
-                <TextBlock Text="Members" Grid.Row="1" FontSize="32" FontWeight="SemiBold" Margin="0 20 0 0 "
-                           HorizontalAlignment="Left" Foreground="#123518"/>
-                -->
+         
 
                 <!-- Add Button-->
                 <Button Style="{StaticResource addButton}" Click="NewUser_Click">
@@ -120,12 +118,7 @@
                     </StackPanel>
                 </Button>
 
-                <!-- Tab Buttons 
-                <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0 10 0 0">
-                    <Button Content="Kullanıcılar" Style="{StaticResource tabButton}"  />
-                    <Button Content="Yöneticiler" Style="{StaticResource tabButton}"/>
-                </StackPanel>
-                -->
+         
 
                 <!-- Filter TextBox-->
                 <Grid Width="200" HorizontalAlignment="Right" Grid.Row="4">
@@ -137,51 +130,57 @@
 
                 <!-- Members DataGrid-->
                 <DataGrid x:Name="userDataGrid"
-          Grid.Row="5"
-          AutoGenerateColumns="False"
-          CanUserAddRows="False"
-          CanUserDeleteRows="False"
-          CanUserResizeColumns="True"
-          CanUserSortColumns="True"
-          IsReadOnly="True">
+                    Grid.Row="5"
+                    
+                    AutoGenerateColumns="False"
+                    CanUserAddRows="False"
+                    CanUserDeleteRows="False"
+                    CanUserResizeColumns="True"
+                    CanUserSortColumns="True"
+                    IsReadOnly="True" Margin="2,0,-2,71" Grid.RowSpan="2"
+                    >
+
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Username" Binding="{Binding Username}" Width="*" />
-                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
-                        <DataGridTextColumn Header="Surname" Binding="{Binding Surname}" Width="*" />
+                        <DataGridTextColumn Header="Username" Binding="{Binding Username}" Width="Auto"  />
+                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="Auto" />
+                        <DataGridTextColumn Header="Surname" Binding="{Binding Surname}" Width="Auto" />
                         <!--<DataGridTextColumn Header="Age" Binding="{Binding Age}" Width="*" /> -->
-                        <DataGridTextColumn Header="Login Status" Binding="{Binding LoginStatus}" Width="*" />
-                        <DataGridTextColumn Header="Password" Binding="{Binding Password}" Width="*" />
+                        <DataGridTextColumn Header="Login Status" Binding="{Binding LoginStatus}" Width="Auto" />
+                        <DataGridTextColumn Header="Password" Binding="{Binding Password}" Width="Auto" />
 
-                        <DataGridTemplateColumn Header="Actions" Width="120">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <!-- Edit Button -->
-                                        <Button Content="Edit" Width="50" Margin="5" Click="EditButton_Click" Tag="{Binding Username}">
-                                            <Button.Style>
-                                                <Style TargetType="Button">
-                                                    <Setter Property="Background" Value="#4CAF50"/>
-                                                    <Setter Property="Foreground" Value="White"/>
-                                                    <Setter Property="FontSize" Value="12"/>
-                                                </Style>
-                                            </Button.Style>
-                                        </Button>
-                                        <!-- Remove Button -->
-                                        <Button Content="Remove" Width="50" Margin="5" Click="RemoveButton_Click" Tag="{Binding Username}">
-                                            <Button.Style>
-                                                <Style TargetType="Button">
-                                                    <Setter Property="Background" Value="#F44336"/>
-                                                    <Setter Property="Foreground" Value="White"/>
-                                                    <Setter Property="FontSize" Value="12"/>
-                                                </Style>
-                                            </Button.Style>
-                                        </Button>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
+                                  <DataGridTemplateColumn  Width="Auto">
+                                      <DataGridTemplateColumn.CellTemplate>
+                                          <DataTemplate>
+                                              <StackPanel Orientation="Horizontal" >
+                                                  <!-- Edit Button -->
+                                                  <Button Content="Edit"  Margin="5" Click="EditButton_Click" Tag="{Binding Username}">
+                                                      <Button.Style>
+                                                          <Style TargetType="Button">
+                                                              <Setter Property="Background" Value="#4CAF50"/>
+                                                              <Setter Property="Foreground" Value="White"/>
+                                                              <Setter Property="FontSize" Value="12"/>
+                                                          </Style>
+                                                          
+                                                          
+                                                      </Button.Style>
+                                                  </Button>
+                                                  <!-- Remove Button -->
+                                                  <Button Content="Remove"  Margin="5" Click="RemoveButton_Click" Tag="{Binding Username}">
+                                                      <Button.Style>
+                                                          <Style TargetType="Button">
+                                                              <Setter Property="Background" Value="#F44336"/>
+                                                              <Setter Property="Foreground" Value="White"/>
+                                                              <Setter Property="FontSize" Value="12"/>
+                                                          </Style>
+                                                      </Button.Style>
+                                                  </Button>
+                                              </StackPanel>
+                                          </DataTemplate>
+                                      </DataGridTemplateColumn.CellTemplate>
+                                  </DataGridTemplateColumn>
+                        
 
-                    </DataGrid.Columns>
+                              </DataGrid.Columns>
                 </DataGrid>
 
                 <!-- Pagination Section-->
@@ -213,5 +212,7 @@
                 </Border>
             </Grid>
         </Grid>
+
+      
     </Border>
 </Page>

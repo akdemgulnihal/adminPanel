@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -16,10 +17,21 @@ using System.Windows.Shapes;
 namespace WpfApp1
 {
 
+    
     public static class FirebaseConfig
     {
         // Firebase URL'sini burada tanımlıyoruz
         public static readonly string FirebaseUrl = "https://adminpanel-a66ab-default-rtdb.firebaseio.com/";
+
+    }
+
+    public static class FirebaseService
+    {
+        // Firebase URL'si
+        public static readonly string FirebaseUrl = FirebaseConfig.FirebaseUrl;
+
+        // HttpClient'i global olarak başlatıyoruz
+        public static readonly HttpClient Client = new HttpClient();
     }
 
     public class UsersData
@@ -47,6 +59,8 @@ namespace WpfApp1
         public MainWindow()
         {
             InitializeComponent();
+
+
             // Load the AdminLoginPage into the Frame
             MainFrame.Navigate(new AdminLoginPage());
         }

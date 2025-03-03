@@ -25,16 +25,11 @@ namespace WpfApp1
     /// </summary>
     public partial class UserLoginPage : Page
     {
-        // Firebase URL'si ve AdminTable verisin'n dosya d'z'n'
-        string firebaseUrl = FirebaseConfig.FirebaseUrl;
-        string tablePath = "StandartUserTable.json"; // AdminTable'daki verileri çekmek için yol
 
         public UserLoginPage()
         {
             InitializeComponent();
         }
-
-
 
 
         //Kullanicinin, kullanici adini giris yaptıgı alan tiklandiginda metin siliniyor
@@ -107,7 +102,7 @@ namespace WpfApp1
                 using (HttpClient client = new HttpClient())
                 {
                     // Firebase'den AdminTable verisini al
-                    string url = firebaseUrl + tablePath;
+                    string url = FirebaseConfig.FirebaseUrl + "StandartUserTable.json";
                     HttpResponseMessage response = await client.GetAsync(url);
 
                     if (response.IsSuccessStatusCode)
@@ -125,10 +120,8 @@ namespace WpfApp1
                             {
                                 loginSuccess = true;
 
-                                var firebase = new FirebaseClient(firebaseUrl);
+                                var firebase = new FirebaseClient(FirebaseConfig.FirebaseUrl);
                                 var userRef = firebase.Child("StandartUserTable").Child(item.Key);
-
-
 
                                 var dataToSend = new Dictionary<string, object>
                                 {
@@ -190,14 +183,6 @@ namespace WpfApp1
             NavigationService.Navigate(new AdminLoginPage());
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
+   
     }
 }

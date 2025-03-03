@@ -7,7 +7,8 @@
       mc:Ignorable="d"
       Title="UserProfileUpdate">
 
-    <Grid>
+
+        <Grid>
         <StackPanel Margin="20">
             <TextBlock Text="Name" Width="360" />
             <TextBox x:Name="NameTextBox" Margin="0,5" Height="30" Width="360" />
@@ -22,7 +23,7 @@
             <TextBox x:Name="EmailTextBox" Margin="0,5" Height="30" Width="360" />
 
             <TextBlock Text="Doğum Tarihi" Margin="0,10,0,0" Width="360"/>
-            <TextBox x:Name="Birthday" Margin="0,5" Height="30" Width="360" />
+            <DatePicker x:Name="Birthday" Margin="0,5" Height="30" Width="360" />
 
             <TextBlock Text="Okulu" Margin="0,10,0,0" Width="360"/>
             <TextBox x:Name="University" Margin="0,5" Height="30" Width="360" />
@@ -36,4 +37,7 @@
             <Button Content="Save" Margin="0,20,0,0" Height="35" Width="100" Click="SaveBtn_Click"/>
         </StackPanel>
     </Grid>
+    
+    
+    
 </Page>

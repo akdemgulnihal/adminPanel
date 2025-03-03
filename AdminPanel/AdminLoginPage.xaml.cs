@@ -1,18 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Newtonsoft.Json;
 using Firebase.Database;
 using Firebase.Database.Query;
@@ -26,28 +17,9 @@ namespace WpfApp1
     public partial class AdminLoginPage : Page
     {
 
-
-        // AdminTable'daki her bir kullanıcı için model sınıfı
-        //public class AdminData
-        //{
-        //    public string Username { get; set; }
-        //    public string Password { get; set; }
-        //}
-
-        // Firebase URL'si ve AdminTable verisi dosya dizini
-        string firebaseUrl = FirebaseConfig.FirebaseUrl;
-        string tablePath = "AdminTable.json"; // AdminTable'daki verileri çekmek için yol
-
-
-
         public AdminLoginPage()
         {
             InitializeComponent();
-        }
-
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
         }
 
 
@@ -126,7 +98,7 @@ namespace WpfApp1
                 using (HttpClient client = new HttpClient())
                 {
                     // Firebase'den AdminTable verisini al
-                    string url = firebaseUrl + tablePath;
+                    string url = FirebaseConfig.FirebaseUrl + "AdminTable.json";
                     HttpResponseMessage response = await client.GetAsync(url);
 
                     if (response.IsSuccessStatusCode)
@@ -144,7 +116,7 @@ namespace WpfApp1
                             {
                                 loginSuccess = true;
 
-                                var firebase = new FirebaseClient(firebaseUrl);
+                                var firebase = new FirebaseClient(FirebaseConfig.FirebaseUrl);
                                 var userRef = firebase.Child("AdminTable").Child(item.Key);
 
 
@@ -200,12 +172,6 @@ namespace WpfApp1
             // Navigate to the UserLoginPage
             NavigationService.Navigate(new UserLoginPage());
         }
-
-        private void AdminControl_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
 
 
         //private void LoginPage_Loaded(object sender, RoutedEventArgs e)

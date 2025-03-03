@@ -5,9 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="Login Page" Height="500" Width="500">
+        Title="Login Page" Height="400" Width="300">
 
-    <!-- Use a Frame to load the page content -->
-    <Frame Name="MainFrame" NavigationUIVisibility="Hidden" />
-
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        <Frame Name="MainFrame" NavigationUIVisibility="Hidden" />
+    </ScrollViewer>
+    
+    
+    
 </Window>

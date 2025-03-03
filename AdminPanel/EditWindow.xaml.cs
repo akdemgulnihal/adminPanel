@@ -19,7 +19,6 @@ namespace WpfApp1
         // Define the UserEdit event for the page
         public event EventHandler UserEdit;
 
-        private string firebaseUrl = FirebaseConfig.FirebaseUrl;
         private string _username;
         private HttpClient client = new HttpClient();
 
@@ -39,38 +38,29 @@ namespace WpfApp1
 
         private async void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
-            // Collect data from the form
-            string name = NameTextBox.Text;
-            string surname = SurnameTextBox.Text;
-            string age = Age.Text;
-            string email = EmailTextBox.Text;
-            string birthday = Birthday.Text;
-            string university = University.Text;
-            string experience = Experience.Text;
-            string password = PasswordBox.Password;
-           
+       
 
             // Create updated user object
             var updatedUser = new UsersData
             {
-                Name = name,
-                Surname = surname,
-                Age = age,
-                Email = email,
-                Birthday = birthday,
-                University = university,
-                Experience = experience,
+                Name = NameTextBox.Text,
+                Surname = SurnameTextBox.Text,
+                Age = Age.Text,
+                Email = EmailTextBox.Text,
+                Birthday = Birthday.Text,
+                University = University.Text,
+                Experience = Experience.Text,
                 Username = _username,
-                Password = password
+                Password = PasswordBox.Password
             };
 
             try
             {
-                var firebase = new FirebaseClient(firebaseUrl);
+                var firebase = new FirebaseClient(FirebaseService.FirebaseUrl);
                 var userRef = firebase.Child("StandartUserTable");
 
                 // Fetch data from Firebase
-                string url = firebaseUrl + "StandartUserTable.json";
+                string url = FirebaseService.FirebaseUrl + "StandartUserTable.json";
                 HttpResponseMessage response = await client.GetAsync(url);
 
                 if (response.IsSuccessStatusCode)

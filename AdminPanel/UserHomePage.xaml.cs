@@ -19,6 +19,11 @@ namespace AdminPanel
     public partial class UserHomePage : Page
     {
 
+        private int currentPage = 1;
+        private int pageSize = 15;
+        private int totalPages = 1;
+        private List<UsersData> UserList;
+
         string firebaseUrl = FirebaseConfig.FirebaseUrl; // Firebase URL,
         private string _username;
         public UserHomePage(string username)
@@ -49,6 +54,14 @@ namespace AdminPanel
                     LoginStatus = u.Object.LoginStatus,
                     Password = u.Object.Password
                 }).ToList();
+
+
+                // Toplam sayfa sayısını hesaplıyor
+                totalPages = (int)Math.Ceiling((double)UserList.Count / pageSize);
+
+                // Get the users for the current page
+                var pagedUsers = UserList.Skip((currentPage- 1) * pageSize).Take(pageSize).ToList();
+
 
                 // Bind the user list to the DataGrid
                 userDataGrid.ItemsSource = userList;

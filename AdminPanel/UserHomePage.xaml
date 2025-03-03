@@ -8,8 +8,10 @@
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
     </Page.Resources>
 
-    <Border Background="#eff2f7" CornerRadius="30">
-        <Grid>
+    
+        <Border Background="#eff2f7" CornerRadius="30">
+            
+            <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
@@ -114,19 +116,6 @@
                     <Icon:PackIconMaterial Kind="Bell"/>
                 </Button>
 
-                <!-- Page Title 
-                <TextBlock Text="Members" Grid.Row="1" FontSize="32" FontWeight="SemiBold" Margin="0 20 0 0 "
-                           HorizontalAlignment="Left" Foreground="#123518"/>
-                -->
-
-                
-
-                <!-- Tab Buttons 
-                <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0 10 0 0">
-                    <Button Content="Kullanıcılar" Style="{StaticResource tabButton}"  />
-                    <Button Content="Yöneticiler" Style="{StaticResource tabButton}"/>
-                </StackPanel>
-                -->
 
                 <!-- Filter TextBox-->
                 <Grid Width="200" HorizontalAlignment="Right" Grid.Row="4">
@@ -138,24 +127,21 @@
 
                 <!-- Members DataGrid-->
                 <DataGrid x:Name="userDataGrid"
-          Grid.Row="5"
-          AutoGenerateColumns="False"
-          CanUserAddRows="False"
-          CanUserDeleteRows="False"
-          CanUserResizeColumns="True"
-          CanUserSortColumns="True"
-          IsReadOnly="True">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Username" Binding="{Binding Username}" Width="*" />
-                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
-                        <DataGridTextColumn Header="Surname" Binding="{Binding Surname}" Width="*" />
-                        <!--<DataGridTextColumn Header="Age" Binding="{Binding Age}" Width="*" /> -->
-                        <DataGridTextColumn Header="Login Status" Binding="{Binding LoginStatus}" Width="*" />
-                        <!--<DataGridTextColumn Header="Password" Binding="{Binding Password}" Width="*" />-->
-
-                        
-
-                    </DataGrid.Columns>
+                    Grid.Row="5"
+                    AutoGenerateColumns="False"
+                    CanUserAddRows="False"
+                    CanUserDeleteRows="False"
+                    CanUserResizeColumns="True"
+                    CanUserSortColumns="True"
+                    IsReadOnly="True">
+                              <DataGrid.Columns>
+                                  <DataGridTextColumn Header="Username" Binding="{Binding Username}" Width="*" />
+                                  <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
+                                  <DataGridTextColumn Header="Surname" Binding="{Binding Surname}" Width="*" />
+                                  <!--<DataGridTextColumn Header="Age" Binding="{Binding Age}" Width="*" /> -->
+                                  <DataGridTextColumn Header="Login Status" Binding="{Binding LoginStatus}" Width="*" />
+                               
+                              </DataGrid.Columns>
                 </DataGrid>
 
                 <!-- Pagination Section-->
@@ -185,7 +171,10 @@
                         </Button>
                     </StackPanel>
                 </Border>
+                
             </Grid>
         </Grid>
-    </Border>
+
+        </Border>
+   
 </Page>

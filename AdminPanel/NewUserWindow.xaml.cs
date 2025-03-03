@@ -9,16 +9,15 @@ using System.Windows.Controls;
 
 namespace WpfApp1
 {
+
+
     public partial class NewUserWindow : Page
     {
         // Define the UserAdded event
         public event EventHandler UserAdded;
 
-        string firebaseUrl = FirebaseConfig.FirebaseUrl;
-        HttpClient client = new HttpClient(); // Declare and initialize the HttpClient
-
-        private bool flag = false;
-        private bool isDataSaved = false;
+       private bool flag = false;
+        //private bool isDataSaved = false;
 
         public NewUserWindow()
         {
@@ -27,6 +26,7 @@ namespace WpfApp1
 
         // Call this method after successfully adding a new user
         private void OnUserAdded()
+
         {
             // Trigger the event
             UserAdded?.Invoke(this, EventArgs.Empty);
@@ -34,38 +34,28 @@ namespace WpfApp1
 
         private async void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
-            string name = NameTextBox.Text;
-            string surname = SurnameTextBox.Text;
-            string age = Age.Text;
-            string email = EmailTextBox.Text;
-            string birthday = Birthday.Text;
-            string university = University.Text;
-            string experience = Experience.Text;
-            string username = userid.Text;
-            string password = PasswordBox.Password;
-
             // Create a new User object with input data
             var newUser = new UsersData
             {
-                Name = name,
-                Surname = surname,
-                Age = age,
-                Email = email,
-                Birthday = birthday,
-                University = university,
-                Experience = experience,
-                Username = username,
-                Password = password,
+                Name = NameTextBox.Text,
+                Surname = SurnameTextBox.Text,
+                Age = Age.Text,
+                Email = EmailTextBox.Text,
+                Birthday = Birthday.Text,
+                University = University.Text,
+                Experience = Experience.Text,
+                Username = userid.Text,
+                Password = PasswordBox.Password,
                 LoginStatus = "Passive"
             };
 
             try
             {
-                var firebase = new FirebaseClient(firebaseUrl);
+                var firebase = new FirebaseClient(FirebaseService.FirebaseUrl);
                 var userRef = firebase.Child("StandartUserTable");
                 // Firebase'den AdminTable verisini al
-                string url = firebaseUrl + "StandartUserTable.json";
-                HttpResponseMessage response = await client.GetAsync(url);
+                string url = FirebaseService.FirebaseUrl + "StandartUserTable.json";
+                var response = await FirebaseService.Client.GetAsync(url);
                 if (response.IsSuccessStatusCode)
                 {
                     string responseData = await response.Content.ReadAsStringAsync();
@@ -76,7 +66,7 @@ namespace WpfApp1
                     // AdminTable'daki tüm kullanıcıları kontrol et
                     foreach (var item in UsersData)
                     {
-                        if (item.Value.Username == username)
+                        if (item.Value.Username == userid.Text)
                         {
                             MessageBox.Show("Sistemde bu username'e sahip birisi bulunmaktadır.");
                             flag = true;
@@ -88,7 +78,7 @@ namespace WpfApp1
                 {
                     var result = await userRef.PostAsync(newUser);
                     MessageBox.Show("Yeni kullanıcı başarılı şekilde veritabanına yüklendi.");
-                    isDataSaved = true;
+                    //isDataSaved = true;
                 }
             }
             catch (Exception ex)
