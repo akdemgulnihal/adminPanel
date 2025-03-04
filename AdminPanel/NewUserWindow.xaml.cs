@@ -6,53 +6,34 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace WpfApp1
+namespace AdminPanel
 {
-
-
-    public partial class NewUserWindow : Page
+    public partial class NewUserWindow : Window
     {
         // Define the UserAdded event
         public event EventHandler UserAdded;
+        private string _username;
 
-       private bool flag = false;
-        //private bool isDataSaved = false;
+        private bool flag = false;
 
-        public NewUserWindow()
+        // Constructor for NewUserWindow
+        public NewUserWindow(string _username)
         {
             InitializeComponent();
         }
 
-
-        /**
-         * Bu metodun işlevi, bir kullanıcı başarılı şekilde eklendikten sonra UserAdded adında bir olay(event) tetiklemektir
-         * UserAdded --- event
-         * ? (null condition operator)
-         * Invoke metodu UserAdded olayını tetikler ve bu olayın herhangi bir dinleyicisini(event handler) çalıştırır
-         * this olayın tetiklenmesinde sender olarak this yani mevcut sınıfın örneği(instance) kullanılır.
-         *
-         *EventArgs.Empty Olay için herhangi bir ek veri gönderilmiyor, sadece olayın tetiklendiği bildirilmek isteniyor. 
-         * Bu nedenle EventArgs.Empty kullanılır. 
-         */
-
+        // Method to trigger UserAdded event after a user is successfully added
         private void OnUserAdded()
-
         {
             UserAdded?.Invoke(this, EventArgs.Empty);
+            // Close the NewUserWindow
+            this.Close();
         }
 
-
-        /**
-         * Save Butonu basıldığında bu fonksiyon çalışıyor
-         * newUser Yeni kullanıcı için girlen değerlerden obje oluşturluyor 
-         * 
-         * Sonra firebase ile ilgili gerekli bağlantılar yapiliyor/
-         * response başarılı şekilde gerçekleşirse
-         *
-         */
+        // Save button click event handler
         private async void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
-            // Yeni kullanıcı için girlen değerlerden obje oluşturluyor 
+            // Create a new user object with the entered data
             var newUser = new UsersData
             {
                 Name = NameTextBox.Text,
@@ -69,73 +50,58 @@ namespace WpfApp1
 
             try
             {
-                //FirebaseClient nesnesi oluşturuluyor. Bu nesne, Firebase veritabanına bağlanmanızı sağlar.
+                // Initialize Firebase client
                 var firebase = new FirebaseClient(FirebaseService.FirebaseUrl);
 
-                // Firebase veritabanındaki "StandartUserTable" adlı veri tablosuna referans alınır.
-                // Bu, kullanıcının verilerinin saklandığı yer
+                // Reference to the "StandartUserTable" in the Firebase database
                 var userRef = firebase.Child("StandartUserTable");
 
-                // veriyi alabilmek için  gerekli URL oluşturuluyor.
+                // Firebase URL to fetch data
                 string url = FirebaseService.FirebaseUrl + "StandartUserTable.json";
 
-                //await  GetAsync'nin sonucunu bekler. await işlem tamamlanana kadar diğer işlemler devam etmez
+                // Fetch data from Firebase
                 var response = await FirebaseService.Client.GetAsync(url);
 
-                //Eğer firebaseden gelen yanıt başarılı ise
                 if (response.IsSuccessStatusCode)
                 {
-                    //Firebase'den geln yanıt json  formatında geliyor ve string değişkenine atanıyor
                     string responseData = await response.Content.ReadAsStringAsync();
-
-                    // JsonConvert.DeserializeObject kullanılarak Dictionary<string,
-                    // UsersData> formatında bir veri yapısına dönüştürülür. 
                     var UsersData = JsonConvert.DeserializeObject<Dictionary<string, UsersData>>(responseData);
 
-                    // AdminTable'daki tüm kullanıcıları kontrol et
+                    // Check if username already exists in the database
                     foreach (var item in UsersData)
                     {
-                        //Username uyuşuyorsa
                         if (item.Value.Username == userid.Text)
-                        {   
-                            //mesaj bastırılır
+                        {
                             MessageBox.Show("Sistemde bu username'e sahip birisi bulunmaktadır.");
                             flag = true;
                         }
                     }
                 }
 
-                // Bu username'de birisi yoksa
+                // If the username doesn't exist, add the new user
                 if (!flag)
                 {
-                    // yeni kullanıcı sisteme eklenir ve ilgili mesaj bastırılır
                     var result = await userRef.PostAsync(newUser);
                     MessageBox.Show("Yeni kullanıcı başarılı şekilde veritabanına yüklendi.");
-                    //isDataSaved = true;
                 }
             }
             catch (Exception ex)
             {
-                // Hata mesaji
+                // Display error message
                 MessageBox.Show("Hata: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
-            OnUserAdded(); 
+            OnUserAdded(); // Trigger the UserAdded event
 
-            // Bir önceki sayfaya dönülüyor
-            if (NavigationService.CanGoBack)
-            {
-                NavigationService.GoBack();
-            }
+       
+       
+            this.Close(); // Close NewUserWindow
         }
 
+        // Cancel button click event handler
         private void CancelBtn_Click(object sender, RoutedEventArgs e)
         {
-            // Bir önceki sayfaya dönülüyor
-            if (NavigationService.CanGoBack)
-            {
-                NavigationService.GoBack();
-            }
+          this.Close(); // Close NewUserWindow
         }
     }
 }

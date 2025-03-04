@@ -7,7 +7,6 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net.Http;
 using System;
-using WpfApp1;
 using System.Linq;
 using System.Windows.Threading;
 
@@ -16,168 +15,89 @@ namespace AdminPanel
     /// <summary>
     /// Interaction logic for UserHomePage.xaml
     /// </summary>
-    public partial class UserHomePage : Page
+    public partial class UserHomePage : Window  // Changed from Page to Window
     {
         private DispatcherTimer _refreshTimer;
 
-        private int currentPage = 1;
-        private int pageSize = 15;
-        private int totalPages = 1;
-        private List<UsersData> UserList;
+        //private int currentPage = 1;
+        //private int pageSize = 15;
+        //private int totalPages = 1;
+        //private List<UsersData> UserList;
         private string _username;
 
-
-        //Constructor
+        // Constructor
         public UserHomePage(string username)
         {
             InitializeComponent();
             _username = username;
             LoadUserData();
 
-            StartRefreshTimer();  // Sayfa yenilemeyi başlat
+            StartRefreshTimer();  // Start the page refresh
         }
 
         private void StartRefreshTimer()
         {
-            // DispatcherTimer'ı başlatıyoruz, 10 saniyede bir çalışacak
+            // Start a DispatcherTimer that triggers every 5 seconds
             _refreshTimer = new DispatcherTimer();
-            _refreshTimer.Interval = TimeSpan.FromSeconds(5);  // 5 saniye aralık
-            _refreshTimer.Tick += RefreshTimer_Tick;  // Timer tetiklendiğinde yapılacak işlemler
-            _refreshTimer.Start();  // Timer'ı başlat
+            HomePageHelper.StartRefreshTimer(_refreshTimer, RefreshTimer_Tick, TimeSpan.FromSeconds(5));
         }
 
         private void RefreshTimer_Tick(object sender, EventArgs e)
         {
-            // Timer tetiklendiğinde LoadUserData fonksiyonunu tekrar çağırarak sayfayı yenileyin
+            // Refresh the data when the timer ticks
             LoadUserData();
         }
 
         private async void LoadUserData()
         {
-            try
+            var userList = await HomePageHelper.LoadUserDataAsycn("StandartUserTable");
+
+            if (userList != null)
             {
-                var firebase = new FirebaseClient(FirebaseService.FirebaseUrl);
-                var userRef = firebase.Child("StandartUserTable");
-
-                //  StandartUserTable'daki userların hepsini alıyor
-                var users = await userRef.OnceAsync<UsersData>();
-
-                // DataGrid'de gösterilmek icin Liste olusturuldu
-                List<UsersData> userList = users.Select(u => new UsersData
-                {
-                    Username = u.Object.Username,
-                    Name = u.Object.Name,
-                    Surname = u.Object.Surname,
-                    //Age = u.Object.Age,
-                    LoginStatus = u.Object.LoginStatus,
-                    Password = u.Object.Password
-                }).ToList();
-
-
-                // Toplam sayfa sayısını hesaplıyor
-                //totalPages = (int)Math.Ceiling((double)UserList.Count / pageSize);
-
-                // Get the users for the current page
-                //var pagedUsers = UserList.Skip((currentPage- 1) * pageSize).Take(pageSize).ToList();
-
-
-                // Bind the user list to the DataGrid
-                //userDataGrid.ItemsSource = userList;
+                userDataGrid.ItemsSource = userList;
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show("Veri alınırken bir hata oluştu: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Veri alınırken bir hata oluştu.", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
-
-        /****
-         *  Bu fonksiyonun amacı sayfanın taşınmasını sağlamak
-         * 
-         *  MouseButtonEventArgs e   fare ile ilgili bilgileri içeren bir nesnedir.
-         *  object sender            hangi öğede gerçekleştiğini belirtir. (bu durumda Border öğesi)
-         */
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            //Farenin sol tuşuna basıldığında - When the left mouse button was pressed
-            if (e.ChangedButton == MouseButton.Left)
-            {
-                // Move the page content (drag the page when the left mouse button is pressed and dragged)
-                Window parentWindow = Window.GetWindow(this);  // Get the parent window
-                if (parentWindow != null)
-                {
-                    parentWindow.DragMove();
-                }
-            }
+            HomePageHelper.HandleWindowDrag(sender, e);
         }
 
         private bool isMaximized = false;
 
-        /**
-         * 
-         * MouseButtonEventArgs e   fare ile ilgili bilgileri içeren bir nesnedir.
-         * object sender            hangi öğede gerçekleştiğini belirtir. (bu durumda Border öğesi)
-         */
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.ClickCount == 2)
-            {
-                Window parentWindow = Window.GetWindow(this);  // Get the parent window
-                if (parentWindow != null)
-                {
-                    if (isMaximized)
-                    {
-                        parentWindow.WindowState = WindowState.Normal;
-                        parentWindow.Width = 1080;
-                        parentWindow.Height = 720;
-
-                        isMaximized = false;
-                    }
-                    else
-                    {
-                        parentWindow.WindowState = WindowState.Maximized;
-                        isMaximized = true;
-                    }
-                }
-            }
+            HomePageHelper.HandleWindowDragAndMaximize(sender, e, ref isMaximized);
         }
 
-
-        //Logout butonuna basılınca bu fonksiyon çalışıyor
-        //Ve bu username'deki kullanıcının LoginStatus değişkenini Active'den Passive çevrilmesini yapıyor.
+        // Logout button click event handler
         private async void LogoutButton_Click(object sender, RoutedEventArgs e)
         {
-            //string loggedInUsername = _username;  // Replace with actual logged-in username, you may already have this stored.
-
             try
             {
-                //using anahtar kelimesi ile, HttpClient nesnesi bir client değişkeni olarak oluşturulur.
                 using (HttpClient client = new HttpClient())
                 {
-
                     string url = FirebaseService.FirebaseUrl + "/StandartUserTable.json";
-
                     HttpResponseMessage response = await client.GetAsync(url);
 
                     if (response.IsSuccessStatusCode)
                     {
                         string responseData = await response.Content.ReadAsStringAsync();
-
-                        // Deserialize the JSON data
                         var usersData = JsonConvert.DeserializeObject<Dictionary<string, UsersData>>(responseData);
 
-                        // Find the user by Username
                         foreach (var item in usersData)
                         {
                             if (item.Value.Username == _username && item.Value.LoginStatus == "Active")
                             {
-                                // Set LoginStatus to Passive
                                 var firebase = new FirebaseClient(FirebaseService.FirebaseUrl);
-                                var userRef = firebase.Child("StandartUserTable").Child(item.Key); // Use the appropriate table (AdminTable or StandartUserTable)
+                                var userRef = firebase.Child("StandartUserTable").Child(item.Key);
 
-                                //Login status'un Passive olarak guncellenmesi
                                 var dataToSend = new Dictionary<string, object>
-                        {
+                                {
                                     { "Username", item.Value.Username },
                                     { "Password", item.Value.Password },
                                     { "Name", item.Value.Name },
@@ -190,16 +110,15 @@ namespace AdminPanel
                                     { "LoginStatus", "Passive" }
                                 };
 
-
                                 await userRef.PutAsync(dataToSend);
-
                                 break;
                             }
                         }
 
-                        //Admin Login Page'e yonlendirilme yapiliyor
+                        // Navigate to the UserLoginPage (you need to instantiate and show the LoginPage as a new window)
                         var loginPage = new UserLoginPage();
-                        NavigationService.Navigate(loginPage);
+                        loginPage.Show();  // Show the LoginPage as a new window
+                        this.Close();  // Close the current window (UserHomePage)
                     }
                     else
                     {
@@ -213,45 +132,25 @@ namespace AdminPanel
             }
         }
 
+        // Edit user profile click event handler
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            // Username alınıyor (from the button's Tag property)
-            // var username = (sender as Button).Tag.ToString();
-
-            // Edit ekranı acılıyor ve düzenleme yapılabiliyor
             MessageBox.Show($"Edit user: {_username}");
 
             try
             {
-                // Yeni pencereyi açıyoruz
                 var editUserWindow = new UserProfileUpdate(_username);
-
-                // Kullanıcıyı düzenlemek için pencereyi göster
-                NavigationService.Navigate(editUserWindow);
-
-                // Update successful, show a success message
-                //MessageBox.Show("Updated successfully");
-
-                // UserLoginPage'e dön
-                // Assuming UserLoginPage is the previous page in your navigation history
-                //NavigationService.GoBack();
-
+                editUserWindow.Show();  // Open the UserProfileUpdate window
 
                 editUserWindow.UserEdit += (s, args) =>
                 {
-                    LoadUserData();  // Kullanıcı eklendikten sonra veri yeniden yüklenecek
+                    LoadUserData();  // Refresh the data after user profile update
                 };
-
-
             }
             catch (Exception ex)
             {
-                // Handle any errors here if needed
                 MessageBox.Show($"Hata: {ex.Message}");
             }
-
-           
         }
-
     }
 }

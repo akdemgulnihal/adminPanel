@@ -1,24 +1,20 @@
 ﻿using Firebase.Database;
+using Firebase.Database.Query;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Windows;
-using System.Windows.Controls;
-using Firebase.Database.Query;
-using AdminPanel;
 
-namespace WpfApp1
+namespace AdminPanel
 {
     /// <summary>
     /// Interaction logic for UserProfileUpdate.xaml
     /// </summary>
-    public partial class UserProfileUpdate : Page
+    public partial class UserProfileUpdate : Window
     {
-        // Define the UserEdit event for the page
         public event EventHandler UserEdit;
 
-        
         private string _username;
         private HttpClient client = new HttpClient();
 
@@ -38,7 +34,6 @@ namespace WpfApp1
 
         private async void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
-
             // Create updated user object
             var updatedUser = new UsersData
             {
@@ -46,12 +41,11 @@ namespace WpfApp1
                 Surname = SurnameTextBox.Text,
                 Age = Age.Text,
                 Email = EmailTextBox.Text,
-                Birthday = Birthday.Text,
+                Birthday = Birthday.SelectedDate?.ToString(),  // Ensure date format
                 University = University.Text,
                 Experience = Experience.Text,
                 Username = _username,
                 Password = PasswordBox.Password
-
             };
 
             try
@@ -89,10 +83,10 @@ namespace WpfApp1
                                 { "Experience", updatedUser.Experience },
                                 { "Username", updatedUser.Username },
                                 { "Password", updatedUser.Password },
-                                { "LoginStatus", "Active"   }
+                                { "LoginStatus", "Active" }
                             };
 
-                            // Veri'nin güncellenmesi
+                            // Update user data
                             await userRefToUpdate.PutAsync(dataToSend);
                             MessageBox.Show("Kullanıcı başarıyla güncellendi.");
                             userFound = true;
@@ -114,22 +108,18 @@ namespace WpfApp1
 
             OnUserEdit(); // Trigger the UserEdit event
 
-            // Admin Home Page'e geri dönülüyor
-            if (NavigationService.CanGoBack)
-            {
-                NavigationService.GoBack();  // Önceki sayfa olan (Admin Home Page)'e gidiliyor
-            }
-            else
-            {
-                // If no page to go back to, navigate directly to AdminHomePage
-                NavigationService.Navigate(new UserHomePage(_username));
-            }
+            // Close the current window
+            this.Close();
+
+           
         }
 
         private void CancelBtn_Click(object sender, RoutedEventArgs e)
         {
-            // If no page to go back to, navigate directly to AdminHomePage
-            NavigationService.Navigate(new UserHomePage(_username));
+            // Close the current window and optionally show UserHomePage again
+            this.Close();
+
+            
         }
     }
 }

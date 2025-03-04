@@ -4,18 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Windows;
-using System.Windows.Controls;
 using Firebase.Database.Query;
-using AdminPanel;
 
-namespace WpfApp1
+namespace AdminPanel
 {
-    /// <summary>
-    /// Interaction logic for EditWindow.xaml
-    /// </summary>
-    public partial class EditWindow : Page
+    public partial class EditWindow : Window
     {
-        // Define the UserEdit event for the page
+        // Define the UserEdit event for the window
         public event EventHandler UserEdit;
 
         private string _username;
@@ -37,8 +32,6 @@ namespace WpfApp1
 
         private async void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
-       
-
             // Create updated user object
             var updatedUser = new UsersData
             {
@@ -113,22 +106,15 @@ namespace WpfApp1
 
             OnUserEdit(); // Trigger the UserEdit event
 
-            // Navigate back to the Admin Home Page
-            if (NavigationService.CanGoBack)
-            {
-                NavigationService.GoBack();  // This will navigate to the previous page (Admin Home Page)
-            }
-            else
-            {
-                // If no page to go back to, navigate directly to AdminHomePage
-                NavigationService.Navigate(new AdminHomePage(_username));
-            }
+       
+            this.Close(); // Close the EditWindow
         }
 
         private void CancelBtn_Click(object sender, RoutedEventArgs e)
         {
-            // If no page to go back to, navigate directly to AdminHomePage
-            NavigationService.Navigate(new AdminHomePage(_username));
+            // Close the EditWindow and open AdminHomePage window
+      
+            this.Close(); // Close the EditWindow
         }
     }
 }
