@@ -7,10 +7,18 @@
         mc:Ignorable="d"
         d:DesignHeight="450" d:DesignWidth="500"
         Title="User Login" Height="450" Width="500"
-         WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        <Style x:Key="ButtonStyleWithDataTrigger" TargetType="Button">
+            <Setter Property="Background" Value="Black"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=ActualWidth, RelativeSource={RelativeSource AncestorType=Window}, Converter={x:Static local:IsGreaterThanConverter.Instance}, ConverterParameter=1400}" Value="True">
+                    <Setter Property="Background" Value="AliceBlue"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
 
     <Border Width="300"
@@ -71,61 +79,21 @@
             <Button x:Name="LoginBtn" 
                     Content="Login" 
                     Foreground="White"
-                    Background="Black"
-                    Margin="0,25"
                     Height="35"
-                    Width="250" Click="LoginBtn_Click">
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type Button}">
-                                    <Border x:Name="LoginBorder" Background="{TemplateBinding Background}"
-                                            CornerRadius="16">
-                                        <ContentPresenter HorizontalAlignment="Center" 
-                                                          VerticalAlignment="Center"/>
-                                    </Border>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="AliceBlue" TargetName="LoginBorder"  />
-                                            <Setter Property="TextBlock.Foreground" Value="Black"  TargetName="LoginBorder" />
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </Button.Style>
+                    Width="250" 
+                    Style="{StaticResource ButtonStyleWithDataTrigger}"
+                    Margin="0,25"
+                    Click="LoginBtn_Click">
             </Button>
 
             <Button x:Name="SwitchBtn" 
                     Content="Kullanıcı Tipini Değiştir" 
                     Foreground="White"
-                    Background="Black"
-                    Margin="0,2"
                     Height="20"
-                    Width="185" Click="SwitchBtn_Click">
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type Button}">
-                                    <Border x:Name="SwitchBorder" Background="{TemplateBinding Background}"
-                                            CornerRadius="16">
-                                        <ContentPresenter HorizontalAlignment="Center" 
-                                                          VerticalAlignment="Center"/>
-                                    </Border>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="AliceBlue" TargetName="SwitchBorder"  />
-                                            <Setter Property="TextBlock.Foreground" Value="Black"  TargetName="SwitchBorder" />
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </Button.Style>
+                    Width="185" 
+                    Style="{StaticResource ButtonStyleWithDataTrigger}"
+                    Margin="0,2"
+                    Click="SwitchBtn_Click">
             </Button>
 
         </StackPanel>

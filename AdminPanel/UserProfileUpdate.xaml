@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:AdminPanel"
         mc:Ignorable="d"
         Title="User Profile Update"
-        Height="500" Width="400">
+        Height="500" Width="400"
+        MinWidth="414" MinHeight="736">
 
     <Grid>
         <StackPanel Margin="20">

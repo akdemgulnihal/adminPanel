@@ -2,12 +2,13 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
-        Title="Admin Home Page" Width="800" Height="600">
+        Title="Admin Home Page" Width="800" Height="600" WindowStyle="ToolWindow">
 
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
     </Window.Resources>
 
+    
     <!-- Use Border to apply CornerRadius -->
     <Border Background="#eff2f7" CornerRadius="30">
         <Grid>
@@ -78,6 +79,7 @@
                 </Grid>
 
                 <!-- Members DataGrid -->
+                
                 <DataGrid x:Name="userDataGrid" Grid.Row="5" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeColumns="True" CanUserSortColumns="True" IsReadOnly="True">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Username" Binding="{Binding Username}" Width="*" />

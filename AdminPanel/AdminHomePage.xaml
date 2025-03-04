@@ -2,15 +2,16 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
-        Title="Admin Home Page" Height="600" Width="800">
+        Title="Admin Home Page" Height="600" Width="800"
+        MinWidth="375" MinHeight="667">
 
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
     </Window.Resources>
 
     <Border Background="#eff2f7" CornerRadius="30">
-
-        <Grid>
+        <ScrollViewer>
+            <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
@@ -27,8 +28,8 @@
                 <Icon:PackIconMaterial Kind="Menu" Width="15" Height="15"/>
             </Button>
 
-            <Border Background="black" CornerRadius="0 50 0 30" Margin="0,105,0,0" Grid.RowSpan="2">
-                <DockPanel Margin="0,51,0,0">
+            <Border Background="black" CornerRadius="0 50 0 30" Margin="0,105,0,0" Grid.RowSpan="2" >
+                <DockPanel Margin="0,51,0,0" Width="Auto" Height="Auto">
                     <!-- Menu Titles -->
                     <TextBlock Text="Ad Soyad" Foreground="White" FontSize="22" FontWeight="SemiBold"
                                DockPanel.Dock="Top" TextAlignment="Center" Margin="5 25 0 10"/>
@@ -79,6 +80,7 @@
                 </DockPanel>
             </Border>
 
+           
             <!-- Main Content Area -->
             <Grid Grid.Column="1" Margin="30 30 20 20">
                 <Grid.RowDefinitions>
@@ -173,7 +175,8 @@
                 </DataGrid>
 
             </Grid>
+            
         </Grid>
-
+        </ScrollViewer>
     </Border>
 </Window>

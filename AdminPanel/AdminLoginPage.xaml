@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:AdminPanel"
         mc:Ignorable="d"
         Title="Admin Login" Height="450" Width="500"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+         MinWidth="375" MinHeight="667">
 
     <Border Width="300"
             Height="400"

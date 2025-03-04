@@ -1,11 +1,12 @@
 ﻿<Window x:Class="AdminPanel.NewUserWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="New User" Height="710" Width="428"
-        WindowStartupLocation="CenterScreen">
+        Title="New User" Height="685" Width="428"
+        WindowStartupLocation="CenterScreen"
+        MinWidth="375" MinHeight="667">
 
     <Grid>
-        <StackPanel Margin="20">
+        <StackPanel Margin="20" >
             <TextBlock Text="Name" Width="360" />
             <TextBox x:Name="NameTextBox" Margin="0,5" Height="30" Width="360" />
 
